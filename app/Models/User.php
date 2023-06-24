@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    // RelacionOne To Many
+    public function images(){
+        $this->hasMany('App\Models\Images');
+    }
 }
