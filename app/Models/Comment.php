@@ -13,12 +13,13 @@ class Comment extends Model
     
     // Relacion Many to One
     public function user(){
-        $this->belongsTo('App\Models\User', 'user_id');
+        //return $this->belongsTo(User::class);
+         return $this->belongsTo('App\Models\User', 'user_id');
     }
     
     
     // Relacion Many to One
     public function image(){
-        $this->belongsTo('App\Models\Image', 'image_id');
+        return $this->belongsTo('App\Models\Image', 'image_id');
     }
 }

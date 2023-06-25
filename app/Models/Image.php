@@ -12,13 +12,13 @@ class Image extends Model
     protected $table = 'images';
     
     // Relacion One to Many / de uno a muchos
-    public function comment(){
+    public function comments(){
         return $this->hasMany('App\Models\Comment');
     }
     
     
     // Relacion One to Many
-    public function like(){
+    public function likes(){
         return $this->hasMany('App\Models\Like');
     }
     
