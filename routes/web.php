@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ToolsController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,10 @@ use App\Http\Controllers\ToolsController;
 |
 */
 
-use App\Models\Image;
+//use App\Models\Image;
 
 Route::get('/', function () {
-    
+   /* 
     // Tu código PHP
     $images = image::all();
     foreach($images as $image){
@@ -36,7 +37,7 @@ Route::get('/', function () {
         echo "<br/>Likes: ".count($image->likes); 
                // ToolsController::showArray($image);
         echo "<hr><br/>";
-    }
+    }*/
     //
 
     
@@ -44,3 +45,9 @@ Route::get('/', function () {
     
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
+
+
