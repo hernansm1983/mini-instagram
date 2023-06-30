@@ -67,7 +67,7 @@
                                         Mi Perfil
                                     </a>
 
-                                    <a class="dropdown-item" href="">
+                                    <a class="dropdown-item" href="{{ route('config') }}">
                                         Configuracion
                                     </a>
                                     
