@@ -76,14 +76,15 @@
                             </div>
                         </div>
                         
-                        <!-- AVATAR -->   
+                        <!-- AVATAR -->  
                         <div class="row mb-3">
-                            @if(\Auth::user()->image)
-                            <img src="{{ url('../storage/app/users', ['filename'=>Auth::user()->image]) }}" alt="alt"/>
-                            @endif
+                            
                             <label for="image_path" class="col-md-4 col-form-label text-md-end">{{ __('Avatar') }}</label>
 
                             <div class="col-md-6">
+                                
+                                @include('includes.avatar')
+                                
                                 <input id="image_path" type="file" class="form-control @error('image_path') is-invalid @enderror" name="image_path" autocomplete="image_path" autofocus>
 
                                 @error('image_path')
