@@ -52,8 +52,8 @@
                             @endif
                         @else
                        
-                        <li class="nav-item"><a href="" class="nav-link">Inicio</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Subir Foto</a></li>
+                        <li class="nav-item"><a href="{{ route('home')}}" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="{{ route('image.create')}}" class="nav-link">Subir Foto</a></li>
                         
                         
                             <li class="nav-item dropdown">
