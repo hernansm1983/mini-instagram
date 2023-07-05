@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\DumpController;
 use Illuminate\Http\Request;
+use App\Models\Image;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $images = Image::orderBy('id','desc')->get();
+        //DumpController::showArray($image);
+        return view('home', [
+            'images' => $images
+        ]);
     }
+    
 }

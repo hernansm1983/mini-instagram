@@ -60,3 +60,4 @@ Route::get('/subir-imagen', 'App\Http\Controllers\ImageController@create')->name
 
 Route::post('/image/save', 'App\Http\Controllers\ImageController@save')->name('image.save');
 
+Route::get('/image/file/{filename}', 'App\Http\Controllers\ImageController@getImage')->name('image.file');
