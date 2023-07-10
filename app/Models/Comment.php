@@ -11,6 +11,14 @@ class Comment extends Model
     
     protected $table = 'comments';
     
+    protected $fillable = [
+        'content',
+    ];
+    
+    protected $hidden = [
+        'id',
+    ];
+    
     // Relacion Many to One
     public function user(){
         //return $this->belongsTo(User::class);

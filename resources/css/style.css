@@ -31,8 +31,24 @@ form .avatar{
     line-height: 35px;
 }
 
-.pub_image .nickname a{
+.pub_image .data-user a{
+    color: black;
     text-decoration: none;
+    
+}
+
+.pub_image .nickname a{
+    
+    color: gray;
+}
+
+.pub_image .nickname{
+    font-weight: bold;
+    color: black;
+}
+
+.pub_image .created_at{
+    font-weight: bold;
     color: gray;
 }
 
@@ -40,6 +56,10 @@ form .avatar{
     width: 100%;
     max-height: 400px;
     overflow: hidden;
+}
+
+.image-detail{
+    max-height: 500px;
 }
 
 .image-container img{
@@ -61,6 +81,10 @@ form .avatar{
     margin-left: 0px;
 }
 
+.pub_image .comments{
+    padding: 20px;
+}
+
 .likes{
     float: left;
     padding-left: 20px;
@@ -69,4 +93,10 @@ form .avatar{
 
 .likes img{
     width: 20px;
+}
+
+.justify-content-center .titulo-seccion{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 }

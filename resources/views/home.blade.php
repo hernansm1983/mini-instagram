@@ -21,18 +21,24 @@
 
 
                     <div class="data-user">
-                        {{ $image->user->surname.', '.$image->user->name.' | ' }}
-                        <span class="nickname"><a href="">{{'@'.$image->user->nick}}</a></span>
+                        <a href="/">
+                            {{ $image->user->surname.', '.$image->user->name.' | ' }}
+                            <span class="nickname">{{'@'.$image->user->nick}}</span>
+                        </a>
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="image-container">
-                        <img src="{{ url('../storage/app/images',['filename'=>$image->image_path]) }}" alt="alt"/>  
+                        <a href="{{ route('image.detail', ['id'=>$image->id]) }}">
+                            <img src="{{ url('../storage/app/images',['filename'=>$image->image_path]) }}" alt="alt"/> 
+                        </a>
                     </div>
                     
                     <div class="description">
+                        
                         <span class="nickname">{{ '@'.$image->user->nick }}</span>
+                        <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($image->created_at) }}</span>
                         <p>{{ $image->description }}</p>
                     </div>
                     
@@ -41,7 +47,7 @@
                     </div>
                     
                     <div class="comments">
-                        <a href="" class="btn btn-sm btn-warning btn-comments">Comentarios</a>
+                        <a href="{{ route('image.detail', ['id'=>$image->id]) }}" class="btn btn-sm btn-warning btn-comments">Comentarios ({{ count($image->comments) }})</a>
                     </div>
                 </div>
             </div>
