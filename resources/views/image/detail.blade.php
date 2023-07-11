@@ -65,6 +65,21 @@
                             
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </form>
+                        <hr>
+                        @foreach($image->comments as $comment)
+                            <div class="comment">
+                                <span class="nickname">{{ '@'.$comment->user->nick }}</span>
+                                <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($comment->created_at) }}</span>
+                                <p>
+                                    {{ $comment->content }}<br/>
+                                    <!-- Si el usuario es el propietario de la publicacion o del comentario se permite el borrado -->
+                                    @if(\Auth::check() && (Auth::user()->id == $comment->user_id || Auth::user()->id == $comment->image->user_id))
+                                        <a href="{{ route('comment.delete', ['id'=>$comment->id]) }}" class="btn btn-sm btn-danger">Eliminar</a>
+                                    @endif
+                                </p>
+                            </div>
+                        <br/>
+                        @endforeach
                     </div>
                 </div>
             </div>
