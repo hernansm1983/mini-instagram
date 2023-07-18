@@ -67,3 +67,7 @@ Route::get('/imagen/{id}', 'App\Http\Controllers\ImageController@detail')->name(
 Route::post('/comment/save', 'App\Http\Controllers\CommentController@save')->name('comment.save');
 
 Route::get('/comment/delete/{id}', 'App\Http\Controllers\CommentController@delete')->name('comment.delete');
+
+Route::get('/like/{image_id}', 'App\Http\Controllers\LikeController@like')->name('like.save');
+
+Route::get('/dislike/{image_id}', 'App\Http\Controllers\LikeController@dislike')->name('like.delete');

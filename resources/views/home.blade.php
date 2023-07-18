@@ -43,7 +43,20 @@
                     </div>
                     
                     <div class="likes">
-                        <img src="{{ url('../resources/img/heart-black.png')}}" alt="alt"/>
+                        
+                        <!-- Comprobamos si el like pertenece al usuario logueado - -->
+                        <?php $user_like = false; ?>
+                        @foreach($image->likes as $like)
+                            @if($like->user->id == Auth::user()->id)
+                                <?php $user_like = true; ?>
+                            @endif
+                        @endforeach
+                        @if($user_like == false)
+                            <img src="{{ url('../resources/img/heart-black.png')}}" class="btn-dislike"/>
+                        @elseif($user_like == true)
+                            <img src="{{ url('../resources/img/heart-red.png')}}" class="btn-like"/>
+                        @endif
+                        <span class="number_likes">{{count($image->likes)}}</span>
                     </div>
                     
                     <div class="comments">

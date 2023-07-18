@@ -15,8 +15,10 @@
     <link href="{{ asset('../resources/css/style.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src="{{ asset('../resources/js/main.js') }}"></script>
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    
 </head>
 <body>
     <div id="app">
