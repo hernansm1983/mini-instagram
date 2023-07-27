@@ -15,6 +15,7 @@
     <link href="{{ asset('../resources/css/style.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('../resources/js/main.js') }}"></script>
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -55,6 +56,7 @@
                         @else
                        
                         <li class="nav-item"><a href="{{ route('home')}}" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="{{ route('like.index')}}" class="nav-link">Favoritas</a></li>
                         <li class="nav-item"><a href="{{ route('image.create')}}" class="nav-link">Subir Foto</a></li>
                         
                         

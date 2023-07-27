@@ -50,6 +50,8 @@ Auth::routes();
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+
 Route::get('/configuracion', 'App\Http\Controllers\UserController@config')->name('config');
 
 Route::post('/user/update', 'App\Http\Controllers\UserController@update')->name('user.update');
@@ -71,3 +73,5 @@ Route::get('/comment/delete/{id}', 'App\Http\Controllers\CommentController@delet
 Route::get('/like/{image_id}', 'App\Http\Controllers\LikeController@like')->name('like.save');
 
 Route::get('/dislike/{image_id}', 'App\Http\Controllers\LikeController@dislike')->name('like.delete');
+
+Route::get('/likes', 'App\Http\Controllers\LikeController@index')->name('like.index');
