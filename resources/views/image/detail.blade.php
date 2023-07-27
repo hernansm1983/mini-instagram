@@ -9,8 +9,8 @@
         <div class="col-md-10">
             @include('includes.message')
 
-            
-            
+
+
             <div class="card pub_image pub_image_detail">
                 <div class="card-header">
                     @if($image->user->image)
@@ -33,41 +33,80 @@
                     <div class="image-container image-detail">
                         <img src="{{ url('../storage/app/images',['filename'=>$image->image_path]) }}" alt="alt"/>  
                     </div>
-                    
+
                     <div class="description">
                         <span class="nickname">{{ '@'.$image->user->nick }}</span>
                         <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($image->created_at) }}</span>
                         <p>{{ $image->description }}</p>
                     </div>
-                    
+
                     <div class="likes">
                         <!-- Comprobamos si el usuario esta logueado -->
                         @if(isset(Auth::user()->id))
-                            <!-- Comprobamos si el like pertenece al usuario logueado - -->
-                            <?php $user_like = false; ?>
-                            @foreach($image->likes as $like)
-                                @if($like->user->id == Auth::user()->id)
-                                    <?php $user_like = true; ?>
-                                @endif
-                            @endforeach
+                        <!-- Comprobamos si el like pertenece al usuario logueado - -->
+                        <?php $user_like = false; ?>
+                        @foreach($image->likes as $like)
+                        @if($like->user->id == Auth::user()->id)
+                        <?php $user_like = true; ?>
+                        @endif
+                        @endforeach
 
-                            @if($user_like)
-                                <img src="{{ url('../resources/img/heart-red.png')}}" data-id="{{$image->id}}" class="btn-dislike"/>
+                        @if($user_like)
+                        <img src="{{ url('../resources/img/heart-red.png')}}" data-id="{{$image->id}}" class="btn-dislike"/>
 
-                            @else
-                                <img src="{{ url('../resources/img/heart-black.png')}}" data-id="{{$image->id}}" class="btn-like"/>
-                            @endif
                         @else
-                            <img src="{{ url('../resources/img/heart-black.png')}}" />
+                        <img src="{{ url('../resources/img/heart-black.png')}}" data-id="{{$image->id}}" class="btn-like"/>
+                        @endif
+                        @else
+                        <img src="{{ url('../resources/img/heart-black.png')}}" />
                         @endif
                         <span class="number_likes">{{count($image->likes)}}</span>
+                        <br/><br/>
+                        <!-- Botones de editar y eliminar -->
+                        @if(\Auth::check() && (\Auth::user()->id == $image->user->id || \Auth::user()->role == 'admin' ))
+                        <div class="actions">
+                            <a href="{{ route('image.edit', ['id' => $image->id]) }}" class="btn btn-sm btn-success">Editar</a>
+<!--                            <a href="{{ route('image.delete', ['id' => $image->id])}}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Eliminar</a>-->
+
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
+                                Eliminar
+                            </button>
+
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Eliminar Publicacion...</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            Si deseas eliminar esta publicacion nunca podras recuperarla, estas seguro ?
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+                                            <a href="{{ route('image.delete', ['id' => $image->id])}}" class="btn btn-danger">Eliminar Definitivamente</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    
+
                     <div class="clearfix"></div>
                     <div class="comments">
                         <h2>Comentarios ({{ count($image->comments) }})</h2>
                         <hr>
-                        
+
                         <form method="POST" action="{{ route('comment.save') }}">
                             @csrf
                             <input type="hidden" name="image_id" value="{{ $image->id }}" />
@@ -75,35 +114,35 @@
                                 <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content" required autocomplete="content">{{ old('content') }}</textarea>
 
                                 @error('content')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
-                                
+
                             </p>    
-                            
+
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </form>
                         <hr>
                         @foreach($image->comments as $comment)
-                            <div class="comment">
-                                <span class="nickname">{{ '@'.$comment->user->nick }}</span>
-                                <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($comment->created_at) }}</span>
-                                <p>
-                                    {{ $comment->content }}<br/>
-                                    <!-- Si el usuario es el propietario de la publicacion o del comentario se permite el borrado -->
-                                    @if(\Auth::check() && (Auth::user()->id == $comment->user_id || Auth::user()->id == $comment->image->user_id))
-                                        <a href="{{ route('comment.delete', ['id'=>$comment->id]) }}" class="btn btn-sm btn-danger">Eliminar</a>
-                                    @endif
-                                </p>
-                            </div>
+                        <div class="comment">
+                            <span class="nickname">{{ '@'.$comment->user->nick }}</span>
+                            <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($comment->created_at) }}</span>
+                            <p>
+                                {{ $comment->content }}<br/>
+                                <!-- Si el usuario es el propietario de la publicacion o del comentario se permite el borrado -->
+                                @if(\Auth::check() && (Auth::user()->id == $comment->user_id || Auth::user()->id == $comment->image->user_id))
+                                <a href="{{ route('comment.delete', ['id'=>$comment->id]) }}" class="btn btn-sm btn-danger">Eliminar</a>
+                                @endif
+                            </p>
+                        </div>
                         <br/>
                         @endforeach
                     </div>
                 </div>
             </div>
 
-            
+
         </div>
 
 

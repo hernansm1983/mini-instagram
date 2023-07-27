@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Models\User;
+use App\Models\Image;
 
 class UserController extends Controller
 {
@@ -69,8 +71,16 @@ class UserController extends Controller
         
     }
     
+    
     public function getImage($filename){
         $file = Storage::disk('users')->get($filename);
         return new Response($file, 200);
+    }
+    
+    
+    public function profile($id){
+        
+        $user = User::find($id);
+        return view('user.profile', ['user'=>$user]);
     }
 }

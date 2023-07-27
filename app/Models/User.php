@@ -48,6 +48,6 @@ class User extends Authenticatable
     
     // RelacionOne To Many
     public function images(){
-        return $this->hasMany('App\Models\Images');
+        return $this->hasMany('App\Models\Image')->orderBy('id', 'desc');
     }
 }

@@ -58,9 +58,15 @@ Route::post('/user/update', 'App\Http\Controllers\UserController@update')->name(
 
 Route::get('/user/avatar/{filename}', 'App\Http\Controllers\UserController@getImage')->name('user.avatar');
 
+Route::get('/perfil/{id}', 'App\Http\Controllers\UserController@profile')->name('profile');
+
 Route::get('/subir-imagen', 'App\Http\Controllers\ImageController@create')->name('image.create');
 
 Route::post('/image/save', 'App\Http\Controllers\ImageController@save')->name('image.save');
+
+Route::get('/image/edit/{id}', 'App\Http\Controllers\ImageController@edit')->name('image.edit');
+
+Route::get('/image/delete/{id}', 'App\Http\Controllers\ImageController@delete')->name('image.delete');
 
 Route::get('/image/file/{filename}', 'App\Http\Controllers\ImageController@getImage')->name('image.file');
 

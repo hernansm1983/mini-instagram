@@ -12,7 +12,7 @@
 
 
         <div class="data-user">
-            <a href="/">
+            <a href="{{ route('profile', ['id'=>$image->user->id]) }}">
                 {{ $image->user->surname.', '.$image->user->name.' | ' }}
                 <span class="nickname">{{'@'.$image->user->nick}}</span>
             </a>
@@ -55,6 +55,7 @@
             <img src="{{ url('../resources/img/heart-black.png')}}" />
             @endif
             <span class="number_likes">{{count($image->likes)}}</span>
+            
         </div>
 
         <div class="comments">

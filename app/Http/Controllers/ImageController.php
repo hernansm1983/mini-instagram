@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Client\Response;
 use App\Http\Controllers\DumpController;
 use App\Models\Image;
+use App\Models\Comment;
+use App\Models\Like;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,11 +20,13 @@ class ImageController extends Controller
     }
 
     
+    // Carga la vista para crear una nueva Publicacion
     public function create(){
         return view('image.create');
     }
     
     
+    // Guarda la Publicacion
     public function save(Request $request){
         
         // Validacion
@@ -63,6 +67,7 @@ class ImageController extends Controller
     }
     
     
+    // Obtiene la Imagen
     public function getImage($filename){
         $image = \Storage::disk('images')->get($filename);
         
@@ -70,6 +75,7 @@ class ImageController extends Controller
     }
     
     
+    // Carga la vista para ver el detalle de la imagen
     public function detail($id){
         
         $image = Image::find($id);
@@ -77,5 +83,66 @@ class ImageController extends Controller
         return view ('image.detail',[
             'image'=>$image
         ]);
+    }
+    
+    
+    // Carga la vista para la edicion de la imagen
+    public function edit($id){
+        $image = Image::find($id);
+        
+        return view('image.create',[
+            'image'=>$image
+        ]);
+    }
+    
+    
+    // Borrado de la Publicacion
+    public function delete($id){
+        
+        // 
+        $user = \Auth::user();
+        
+        // Traemos los datos de la imagen
+        $image = Image::find($id);
+        
+        // Traemos los comentarios asociados a la imagen
+        $comments = Comment::where('image_id', $id)->get();
+        
+        // Traemos los Likes asociados a la imagen
+        $likes = Like::where('image_id', $id)->get();
+        
+        if($user && $image && ($image->user_id == $user->id || $user->role == 'admin')){
+            
+            // Eliminar Comentarios
+            if($comments && count($comments) >= 1){
+                foreach($comments as $comment){
+                    $comment->delete();    
+                }
+            }
+            
+            // Eliminar Likes
+            if($likes && count($likes) >= 1){
+                foreach($likes as $like){
+                    $like->delete();
+                }
+            }
+            
+            // Eliminar archivo de la imagen
+            \Storage::disk('images')->delete($image->image_path);
+            
+            // Eliminar registro de la imagen
+            $image->delete($id);   
+            
+            $message = array('message' => 'La imagen se ha eliminado correctamente');
+            
+        }else{
+            
+            $message = array('message' => 'La imagen no se ha podido eliminar');
+            
+        }
+        
+         
+        return redirect('home')->with($message);
+        
     }
 }
