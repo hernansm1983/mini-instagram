@@ -8,7 +8,10 @@
             <div class="card">
                 <div class="card-header">Subir una Imagen Nueva</div>
             
-            
+            <?php echo $image->description; ?>
+                @if($image && $image->description)
+                    $description = $image->description
+                @endif
                 <div class="card-body">
                     <form action="{{ route('image.save') }}" method="post" enctype="multipart/form-data">
                         @csrf

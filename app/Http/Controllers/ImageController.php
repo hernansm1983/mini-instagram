@@ -88,18 +88,29 @@ class ImageController extends Controller
     
     // Carga la vista para la edicion de la imagen
     public function edit($id){
+        
+        // Conseguir el usuario identificado
+        $user = \Auth::user();
+        
+        // Traemos los datos de la imagen
         $image = Image::find($id);
         
-        return view('image.create',[
-            'image'=>$image
-        ]);
+        if($user && $image && ($user->id == $image->user->id || $user->role == 'admin')){
+            
+            return view('image.edit',[
+                'image'=>$image
+            ]);  
+            
+        }else{
+            return redirect()->route('home');
+        }
     }
     
     
     // Borrado de la Publicacion
     public function delete($id){
         
-        // 
+        // Conseguir el usuario identificado
         $user = \Auth::user();
         
         // Traemos los datos de la imagen
@@ -111,7 +122,7 @@ class ImageController extends Controller
         // Traemos los Likes asociados a la imagen
         $likes = Like::where('image_id', $id)->get();
         
-        if($user && $image && ($image->user_id == $user->id || $user->role == 'admin')){
+        if($user && $image && ($image->user->id == $user->id || $user->role == 'admin')){
             
             // Eliminar Comentarios
             if($comments && count($comments) >= 1){
@@ -140,9 +151,56 @@ class ImageController extends Controller
             $message = array('message' => 'La imagen no se ha podido eliminar');
             
         }
+        return redirect('home')->with($message); 
+    }
+    
+    
+    
+    public function update(Request $request){
         
-         
-        return redirect('home')->with($message);
+               
+        // Recoger datos del formulario
+        $description = $request->input('description');
+        $image_id    = $request->input('image_id');
+        $image_path  = $request->file('image_path');
+       
         
+        // validar datos del formulario
+        $validate = $this->validate($request, [
+            'description' => ['required', 'string', 'max:255'],
+            'image_path'  => ['image']
+        ]);
+             
+        // Conseguimos los datos de la imagen existente
+        $image = Image::find($image_id);
+            
+        // Subir la imagen
+        if($image_path){
+            
+            
+            
+            if($image){
+                // Eliminar archivo de la imagen existente
+                \Storage::disk('images')->delete($image->image_path);    
+            }
+            
+            // Poner nombre Unico
+            $image_path_name = time().$image_path->getClientOriginalName();
+            
+            // Guardar en la carpeta storage (storage/app/users)
+            \Storage::disk('images')->put($image_path_name, File::get($image_path));
+            
+            // Seteo el nombre de la imagen en el objeto
+            $image->image_path = $image_path_name;
+        }
+        
+        // Asignar nuevos valores al objeto
+        $image->description = $description;
+        
+        // Ejecutar consulta y cambios en la DB
+        $image->update();
+        
+        return redirect()->route('image.detail', ['id' => $image_id])
+                         ->with('message', 'La Publicacion ha sido modificada correctamente');
     }
 }

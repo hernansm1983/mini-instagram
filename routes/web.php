@@ -66,6 +66,8 @@ Route::post('/image/save', 'App\Http\Controllers\ImageController@save')->name('i
 
 Route::get('/image/edit/{id}', 'App\Http\Controllers\ImageController@edit')->name('image.edit');
 
+Route::post('/image/update', 'App\Http\Controllers\ImageController@update')->name('image.update');
+
 Route::get('/image/delete/{id}', 'App\Http\Controllers\ImageController@delete')->name('image.delete');
 
 Route::get('/image/file/{filename}', 'App\Http\Controllers\ImageController@getImage')->name('image.file');
