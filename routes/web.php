@@ -58,6 +58,8 @@ Route::post('/user/update', 'App\Http\Controllers\UserController@update')->name(
 
 Route::get('/user/avatar/{filename}', 'App\Http\Controllers\UserController@getImage')->name('user.avatar');
 
+Route::get('/user/index', 'App\Http\Controllers\UserController@index')->name('user.index');
+
 Route::get('/perfil/{id}', 'App\Http\Controllers\UserController@profile')->name('profile');
 
 Route::get('/subir-imagen', 'App\Http\Controllers\ImageController@create')->name('image.create');

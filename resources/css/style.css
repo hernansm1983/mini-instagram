@@ -127,3 +127,13 @@ form .avatar{
     padding-left: 30px;
     padding-top: 30px;
 }
+
+.profile-user .user-info a:link{
+    text-decoration: none;
+  
+}
+
+.profile-user .user-info a:visited{
+    text-decoration: none;
+   
+}

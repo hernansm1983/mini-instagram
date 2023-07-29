@@ -16,7 +16,17 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-
+    
+    
+    // Muestra Todos los usuarios
+    public function index(){
+        
+        // Conseguimos todos los usuarios de la DB
+        $users = User::orderBy('id', 'desc')->simplePaginate(10);
+        
+        return view('user.index', ['users' => $users]);
+    }
+    
     
     public function config(){
         return view ('user.config');
@@ -83,4 +93,5 @@ class UserController extends Controller
         $user = User::find($id);
         return view('user.profile', ['user'=>$user]);
     }
+  
 }
