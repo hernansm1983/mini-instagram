@@ -137,3 +137,13 @@ form .avatar{
     text-decoration: none;
    
 }
+
+.btn-search{
+    padding-top: 22px;
+    margin-left: 0px;
+}
+
+.search{
+    background-color: white !important;
+}
+

@@ -19,12 +19,25 @@ class UserController extends Controller
     
     
     // Muestra Todos los usuarios
-    public function index(){
+    public function index(Request $request, $search = null){
         
-        // Conseguimos todos los usuarios de la DB
-        $users = User::orderBy('id', 'desc')->simplePaginate(10);
+        if(!empty($search)){
+            $users = User::where('name', 'LIKE', '%'.$search.'%')
+                            ->orWhere('surname', 'LIKE', '%'.$search.'%')
+                            ->orWhere('nick', 'LIKE', '%'.$search.'%')
+                            ->orWhere('email', 'LIKE', '%'.$search.'%')
+                            ->orderBy('id', 'desc')
+                            ->simplePaginate(10); 
+            
+        }else{
+            // Conseguimos todos los usuarios de la DB
+            $users = User::orderBy('id', 'desc')->simplePaginate(10);    
+        }
         
-        return view('user.index', ['users' => $users]);
+        
+        return view('user.index', compact('request'), ['users' => $users]);
+        
+        //return view('nombre_de_tu_vista', compact('request'));
     }
     
     

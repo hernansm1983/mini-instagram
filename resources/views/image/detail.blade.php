@@ -65,13 +65,11 @@
                         <!-- Botones de editar y eliminar -->
                         @if(\Auth::check() && (\Auth::user()->id == $image->user->id || \Auth::user()->role == 'admin' ))
                         <div class="actions">
-                            <a href="{{ route('image.edit', ['id' => $image->id]) }}" class="btn btn-sm btn-success">Editar</a>
+                            <a href="{{ route('image.edit', ['id' => $image->id]) }}" class="btn btn-sm btn-success">Editar Publicación</a>
 <!--                            <a href="{{ route('image.delete', ['id' => $image->id])}}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Eliminar</a>-->
 
                             <!-- Button to Open the Modal -->
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Eliminar
-                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Eliminar Publicación</button>
 
                             <!-- The Modal -->
                             <div class="modal" id="myModal">
@@ -80,13 +78,13 @@
 
                                         <!-- Modal Header -->
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Eliminar Publicacion...</h4>
+                                            <h4 class="modal-title">Eliminar Publicación...</h4>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
 
                                         <!-- Modal body -->
                                         <div class="modal-body">
-                                            Si deseas eliminar esta publicacion nunca podras recuperarla, estas seguro ?
+                                            Si deseas eliminar esta publicación nunca podras recuperarla, estás seguro ?
                                         </div>
 
                                         <!-- Modal footer -->
@@ -121,7 +119,8 @@
 
                             </p>    
 
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="submit" class="btn btn-success">Guardar Comentario</button>
+                            <br/><br/>
                         </form>
                         <hr>
                         @foreach($image->comments as $comment)
@@ -129,14 +128,44 @@
                             <span class="nickname">{{ '@'.$comment->user->nick }}</span>
                             <span class="created_at">{{ ' | '.\FormatTime::LongTimeFilter($comment->created_at) }}</span>
                             <p>
-                                {{ $comment->content }}<br/>
+                                {{ $comment->content }}<br/><br/>
                                 <!-- Si el usuario es el propietario de la publicacion o del comentario se permite el borrado -->
                                 @if(\Auth::check() && (Auth::user()->id == $comment->user_id || Auth::user()->id == $comment->image->user_id))
-                                <a href="{{ route('comment.delete', ['id'=>$comment->id]) }}" class="btn btn-sm btn-danger">Eliminar</a>
+                                <!-- <a href="{{ route('comment.delete', ['id'=>$comment->id]) }}" class="btn btn-sm btn-danger">Eliminar Comentario</a> -->
+                                
+                                <!-- Button to Open the Modal -->
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#myModal2">Eliminar Comentario</button>
+
                                 @endif
                             </p>
+                            
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal2">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Eliminar Comentario ...</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal2"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            Si deseas eliminar este comentario nunca podrás recuperarlo, estás seguro ?
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
+                                            <a href="{{ route('comment.delete', ['id' => $comment->id])}}" class="btn btn-danger">Eliminar Definitivamente</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <br/>
+                       
                         @endforeach
                     </div>
                 </div>

@@ -46,11 +46,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// GENERALES
+
 Auth::routes();
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+
+
+
+
+// USUARIOS
 
 Route::get('/configuracion', 'App\Http\Controllers\UserController@config')->name('config');
 
@@ -61,6 +69,12 @@ Route::get('/user/avatar/{filename}', 'App\Http\Controllers\UserController@getIm
 Route::get('/user/index', 'App\Http\Controllers\UserController@index')->name('user.index');
 
 Route::get('/perfil/{id}', 'App\Http\Controllers\UserController@profile')->name('profile');
+
+Route::get('/gente/{search?}', 'App\Http\Controllers\UserController@index')->name('user.index');
+
+
+
+// IMAGEN
 
 Route::get('/subir-imagen', 'App\Http\Controllers\ImageController@create')->name('image.create');
 
@@ -76,9 +90,17 @@ Route::get('/image/file/{filename}', 'App\Http\Controllers\ImageController@getIm
 
 Route::get('/imagen/{id}', 'App\Http\Controllers\ImageController@detail')->name('image.detail');
 
+
+
+// COMMENTS
+
 Route::post('/comment/save', 'App\Http\Controllers\CommentController@save')->name('comment.save');
 
 Route::get('/comment/delete/{id}', 'App\Http\Controllers\CommentController@delete')->name('comment.delete');
+
+
+
+// LIKES
 
 Route::get('/like/{image_id}', 'App\Http\Controllers\LikeController@like')->name('like.save');
 
