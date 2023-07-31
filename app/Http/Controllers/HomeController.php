@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index():View
     {
-        $images = Image::orderBy('id','desc')->simplePaginate(3);
+        $images = Image::orderBy('id','desc')->simplePaginate(10);
         //DumpController::showArray($image);
         return view('home', [
             'images' => $images
