@@ -1,4 +1,8 @@
-var url = 'http://localhost/mini-instagram/';
+if(window.location.hostname === 'localhost'){
+    var url = 'http://localhost/mini-instagram/';   
+}else{
+    var url = 'https://artemisa.alwaysdata.net/mini-instagram/';
+}
 
 window.addEventListener("load", function(){
     
