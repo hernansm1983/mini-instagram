@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            
+            @include('includes.message')
             <div class="card">
                 <div class="card-header">Subir una Imagen Nueva</div>
             
@@ -22,7 +22,7 @@
 
                             <div class="col-md-6">
                                 <input id="image_path" type="file" class="form-control @error('image_path') is-invalid @enderror" name="image_path" value="{{ old('image_path') }}" required autocomplete="image_path" autofocus>
-
+                                La imagen debe ser menor a 5MB
                                 @error('image_path')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

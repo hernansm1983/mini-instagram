@@ -26,7 +26,7 @@
                                 <img src="{{ url('../storage/app/images',['filename'=>$image_path]) }}" width="400" height="300" alt="alt"/>
                                 <br/><br/>
                                 <input id="image_path" type="file" class="form-control @error('image_path') is-invalid @enderror" name="image_path" value="{{ old('image_path') }}" autocomplete="image_path" autofocus>
-
+                                La imagen debe ser menor a 5MB
                                 @error('image_path')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

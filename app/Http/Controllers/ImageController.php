@@ -32,38 +32,49 @@ class ImageController extends Controller
         // Validacion
         $validate = $this->validate($request, [
             'description' => 'required',
-            'image_path' => 'required|image'
+            'image_path' => 'required|image|max:5242880'
         ]);
         
         // Recojer Datos
         $image_path = $request->file('image_path');
-        $description = $request->input('description');
+        $size = filesize($image_path);
         
-        // Asignar valores al Objeto
-        $image = new Image();
-        $image->user_id = \Auth::user()->id;
+        // Si la imagen es menor a 5MB continuamos con la subida 
+        if($size < 5242880){
+           
+            $description = $request->input('description');
+
+            // Asignar valores al Objeto
+            $image = new Image();
+            $image->user_id = \Auth::user()->id;
+
+            $image->description = $description;
+
+            // Subir Imagen
+            if($image_path){
+                // Poner nombre Unico
+                $image_path_name = time().$image_path->getClientOriginalName();
+
+                // Guardar en la carpeta storage (storage/app/users)
+                \Storage::disk('images')->put($image_path_name, File::get($image_path));
+
+                // Seteo el nombre de la imagen en el objeto
+                $image->image_path = $image_path_name;
+
+            }
+
+            // Guarda el Objeto en la DB
+            $image->save();
+
+            return redirect()->route('home')->with([
+                'message' => 'La Foto ha sido subida correctamente !!'
+            ]);
         
-        $image->description = $description;
-        
-        // Subir Imagen
-        if($image_path){
-            // Poner nombre Unico
-            $image_path_name = time().$image_path->getClientOriginalName();
+        }else{ // si la imagen es mayor a 5MB cancelamos la subida y redireccionamos
             
-            // Guardar en la carpeta storage (storage/app/users)
-            \Storage::disk('images')->put($image_path_name, File::get($image_path));
-            
-            // Seteo el nombre de la imagen en el objeto
-            $image->image_path = $image_path_name;
-            
+            return redirect()->route('image.create')
+                         ->with('message', 'La imagen debe ser menor a 5MB para poder crear la publicación correctamente');
         }
-        
-        // Guarda el Objeto en la DB
-        $image->save();
-        
-        return redirect()->route('home')->with([
-            'message' => 'La Foto ha sido subida correctamente !!'
-        ]);
     }
     
     
@@ -168,39 +179,50 @@ class ImageController extends Controller
         // validar datos del formulario
         $validate = $this->validate($request, [
             'description' => ['required', 'string', 'max:255'],
-            'image_path'  => ['image']
+            'image_path'  => ['image', 'max:5242880']
         ]);
              
         // Conseguimos los datos de la imagen existente
         $image = Image::find($image_id);
-            
+        
+        $size = filesize($image_path);    
+        
         // Subir la imagen
         if($image_path){
+           
+            // Si la imagen es menor a 5MB continuamos con la subida 
+            if($size < 5242880){ 
             
             
-            
-            if($image){
-                // Eliminar archivo de la imagen existente
-                \Storage::disk('images')->delete($image->image_path);    
+                if($image){
+                    // Eliminar archivo de la imagen existente
+                    \Storage::disk('images')->delete($image->image_path);    
+                }
+
+                // Poner nombre Unico
+                $image_path_name = time().$image_path->getClientOriginalName();
+
+                // Guardar en la carpeta storage (storage/app/users)
+                \Storage::disk('images')->put($image_path_name, File::get($image_path));
+
+                // Seteo el nombre de la imagen en el objeto
+                $image->image_path = $image_path_name;
+                
+                
+            }else{
+                return redirect()->route('image.detail', ['id' => $image_id])
+                             ->with('message', 'La Publicacion no ha sido modificada correctamente, la imagen debe ser menor a 5MB');
             }
+
+            // Asignar nuevos valores al objeto
+            $image->description = $description;
+
+            // Ejecutar consulta y cambios en la DB
+            $image->update();
+
+            return redirect()->route('image.detail', ['id' => $image_id])
+                             ->with('message', 'La Publicacion ha sido modificada correctamente');
             
-            // Poner nombre Unico
-            $image_path_name = time().$image_path->getClientOriginalName();
-            
-            // Guardar en la carpeta storage (storage/app/users)
-            \Storage::disk('images')->put($image_path_name, File::get($image_path));
-            
-            // Seteo el nombre de la imagen en el objeto
-            $image->image_path = $image_path_name;
+            }
         }
-        
-        // Asignar nuevos valores al objeto
-        $image->description = $description;
-        
-        // Ejecutar consulta y cambios en la DB
-        $image->update();
-        
-        return redirect()->route('image.detail', ['id' => $image_id])
-                         ->with('message', 'La Publicacion ha sido modificada correctamente');
-    }
 }
