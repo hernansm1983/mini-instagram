@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FormatTimeServiceProvider::class,
+        App\Providers\IsFriendServiceProvider::class,
 
     ])->toArray(),
 
@@ -186,6 +187,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'FormatTime' => App\Helpers\FormatTime::class,
+        'IsFriend' => App\Helpers\IsFriend::class,
+
 
     ])->toArray(),
 

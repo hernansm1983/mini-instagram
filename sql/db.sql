@@ -80,3 +80,18 @@ INSERT INTO likes VALUES(NULL, 2, 4, CURTIME(), CURTIME());
 INSERT INTO likes VALUES(NULL, 3, 1, CURTIME(), CURTIME());
 INSERT INTO likes VALUES(NULL, 3, 2, CURTIME(), CURTIME());
 INSERT INTO likes VALUES(NULL, 2, 1, CURTIME(), CURTIME());
+
+
+
+
+CREATE TABLE IF NOT EXISTS friends(
+id          int(255) auto_increment not null,
+id_f1       int(255),
+id_f2       int(255),
+accepted    boolean DEFAULT 0,
+created_at  datetime,
+updated_at  datetime,
+CONSTRAINT pk_friends PRIMARY KEY(id),
+CONSTRAINT fk_friends_f1 FOREIGN KEY(id_f1) REFERENCES users(id),
+CONSTRAINT fk_friends_f2 FOREIGN KEY(id_f2) REFERENCES users(id)
+)ENGINE=InnoDb;

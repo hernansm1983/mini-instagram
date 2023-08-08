@@ -21,19 +21,31 @@ class UserController extends Controller
     // Muestra Todos los usuarios
     public function index(Request $request, $search = null){
         
+        // conseguir usuario identificado
+        $user = \Auth::user();
+        $id   = $user->id;
+        
+        
         if(!empty($search)){
-            $users = User::where('name', 'LIKE', '%'.$search.'%')
-                            ->orWhere('surname', 'LIKE', '%'.$search.'%')
-                            ->orWhere('nick', 'LIKE', '%'.$search.'%')
-                            ->orWhere('email', 'LIKE', '%'.$search.'%')
-                            ->orderBy('id', 'desc')
-                            ->simplePaginate(10); 
+        
+            $users = User::where(function ($query) use ($search) {
+                        $query->where('name', 'LIKE', '%' . $search . '%')
+                              ->orWhere('surname', 'LIKE', '%' . $search . '%')
+                              ->orWhere('nick', 'LIKE', '%' . $search . '%')
+                              ->orWhere('email', 'LIKE', '%' . $search . '%');
+                    })
+                    ->whereNotIn('id', [$id]) // Excluir el ID del usuario Logueado
+                    ->orderBy('id', 'desc')
+                    ->simplePaginate(10);
             
         }else{
             // Conseguimos todos los usuarios de la DB
-            $users = User::orderBy('id', 'desc')->simplePaginate(10);    
+            $users = User::where('id', '!=', $id) // Excluir el ID del usuario Logueado
+                           ->orderBy('id', 'desc')
+                           ->simplePaginate(10);
+                              
+            
         }
-        
         
         return view('user.index', compact('request'), ['users' => $users]);
         

@@ -74,6 +74,16 @@ Route::get('/gente/{search?}', 'App\Http\Controllers\UserController@index')->nam
 
 
 
+// AMIGOS
+
+Route::get('/seguir-amigo/{id_f2?}', 'App\Http\Controllers\FriendController@follow')->name('friend.follow');
+
+Route::get('/aceptar-amigo/{id?}', 'App\Http\Controllers\FriendController@accept')->name('friend.accept');
+
+Route::get('/amigos/{search?}', 'App\Http\Controllers\FriendController@index')->name('friend.index');
+
+
+
 // IMAGEN
 
 Route::get('/subir-imagen', 'App\Http\Controllers\ImageController@create')->name('image.create');
